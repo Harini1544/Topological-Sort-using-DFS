@@ -1,0 +1,40 @@
+from collections import defaultdict
+
+class Graph:
+    def __init__(self):
+        self.graph = defaultdict(list)
+
+    def add_edge(self, u, v):
+        self.graph[u].append(v)
+
+    def _dfs(self, node, visited, stack):
+        visited.add(node)
+        for neighbor in self.graph[node]:
+            if neighbor not in visited:
+                self._dfs(neighbor, visited, stack)
+        stack.append(node)
+
+    def topological_sort(self):
+        visited = set()
+        stack = []
+
+        for node in self.graph:
+            if node not in visited:
+                self._dfs(node, visited, stack)
+
+        return stack[::-1]  # Reverse the stack
+
+# Test the Topological Sort
+def main():
+    g = Graph()
+    g.add_edge(5, 2)
+    g.add_edge(5, 0)
+    g.add_edge(4, 0)
+    g.add_edge(4, 1)
+    g.add_edge(2, 3)
+    g.add_edge(3, 1)
+
+    print("Topological Sort:", g.topological_sort())
+
+if __name__ == "__main__":
+    main()
